@@ -31,10 +31,28 @@ const ShoeCard = ({
       ? 'new-release'
       : 'default'
 
+  const FLAG_STYLES = {
+    'on-sale': {
+      '--background-color': COLORS.primary,
+    },
+    'new-release': {
+      '--background-color': COLORS.secondary,
+    },
+    'default': {
+      '--opacity': 0,
+    },
+  };
+  const FLAG_CONTENT = {
+    'on-sale': 'Sale',
+    'new-release': 'Just Released!',
+    'default': '',
+  }
+
   return (
     <Link href={`/shoe/${slug}`}>
       <Wrapper>
         <ImageWrapper>
+          <Flag style={FLAG_STYLES[variant]} variant={variant}>{FLAG_CONTENT[variant]}</Flag>
           <Image alt="" src={imageSrc} />
         </ImageWrapper>
         <Spacer size={12} />
@@ -44,6 +62,7 @@ const ShoeCard = ({
         </Row>
         <Row>
           <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
+          <SalePrice>{salePrice ? formatPrice(salePrice) : ''}</SalePrice>
         </Row>
       </Wrapper>
     </Link>
@@ -55,16 +74,23 @@ const Link = styled.a`
   color: inherit;
 `;
 
-const Wrapper = styled.article``;
+const Wrapper = styled.article`
+  max-width: 340px;
+  margin-bottom: 8px;
+`;
 
 const ImageWrapper = styled.div`
   position: relative;
 `;
 
-const Image = styled.img``;
+const Image = styled.img`
+  width: 100%;
+`;
 
 const Row = styled.div`
   font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const Name = styled.h3`
@@ -82,5 +108,17 @@ const SalePrice = styled.span`
   font-weight: ${WEIGHTS.medium};
   color: ${COLORS.primary};
 `;
+
+const Flag = styled.span`
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--background-color);
+  opacity: var(--opacity);
+  color: ${COLORS.white};
+  font-size: .875rem;
+  padding: 8px 10px;
+  font-weight: 700;
+`
 
 export default ShoeCard;
